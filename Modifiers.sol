@@ -35,6 +35,7 @@ contract Modifiers {
 	Hint: addFund(uint256 _amount)*/
 	
 	uint fee = 0.05 ether;
+	address public owner;
 	mapping(address => uint256) public balances;
 	modifier onlyOwner(){
 		require(msg.sender == address(this).sender,"Not the owner!");
@@ -47,6 +48,9 @@ contract Modifiers {
 	modifier amountTooSmall(uint _amount){
 		require(_amount > fee,"Not enough money to pay for the fee!");
 		_;
+	}
+	function setOwner(address _owner) public{ 
+		owner = _owner; 
 	}
 	function deposit(uint256 _amount) public{ 
 		balances[msg.sender] = _amount; 
