@@ -31,9 +31,10 @@ contract Events {
 	Hint: addFund(uint256 _amount)*/
 	
 	uint fee = 0.05 ether;
+	address public owner;
 	mapping(address => uint256) public balances;
 	modifier onlyOwner(){
-		require(msg.sender == address(this).sender,"Not the owner!");
+		require(msg.sender == owner,"Not the owner!");
 		_;
 	}
 	modifier onlyUsers(){
@@ -44,7 +45,10 @@ contract Events {
 		require(_amount > fee,"Not enough money to pay for the fee!");
 		_;
 	}
-	function withdrawFunds() public onlyOwner{
+	function setOwner(address _owner) public{ 
+		owner = _owner; 
+	}
+	function withdrawFunds() public view onlyOwner{
 		uint _amount = address(this).balance;
 		//sent balance to owner
 	}

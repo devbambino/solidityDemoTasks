@@ -38,7 +38,7 @@ contract Modifiers {
 	address public owner;
 	mapping(address => uint256) public balances;
 	modifier onlyOwner(){
-		require(msg.sender == address(this).sender,"Not the owner!");
+		require(msg.sender == owner,"Not the owner!");
 		_;
 	}
 	modifier onlyUsers(){
@@ -58,7 +58,7 @@ contract Modifiers {
 	function addFund(uint256 _amount) public onlyUsers amountTooSmall(_amount){
 		balances[msg.sender] += _amount; 
 	}
-	function withdrawFunds() public onlyOwner{
+	function withdrawFunds() public view onlyOwner{
 		uint _amount = address(this).balance;
 		//sent balance to owner
 	}
