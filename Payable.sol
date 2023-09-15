@@ -31,9 +31,10 @@ contract Payable {
 	Hint: addFund(uint256 _amount)*/
 	
 	uint fee = 0.05 ether;
+	address payable public owner;
 	mapping(address => uint256) public balances;
 	modifier onlyOwner(){
-		require(msg.sender == address(this).sender,"Not the owner!");
+		require(msg.sender == owner,"Not the owner!");
 		_;
 	}
 	modifier onlyUsers(){
@@ -66,7 +67,7 @@ contract Payable {
 	We will allow users to send real ETH deposits to our smart contract by adding a payable function. 
 	Function deposit will be re-written to accept no arguments but receive real ETH deposits and still save 
 	and update user balance. deposit() accepts ETH through the payable modifier and updates user balance accordingly*/
-	address payable public owner;
+	
 
 	constructor(address _owner){
 		owner = payable(_owner);
