@@ -31,9 +31,10 @@ contract Fallback {
 	Hint: addFund(uint256 _amount)*/
 	
 	uint fee = 0.05 ether;
+	address payable public owner;
 	mapping(address => uint256) public balances;
 	modifier onlyOwner(){
-		require(msg.sender == address(this).sender,"Not the owner!");
+		require(msg.sender == owner,"Not the owner!");
 		_;
 	}
 	modifier onlyUsers(){
@@ -44,7 +45,7 @@ contract Fallback {
 		require(_amount > fee,"Not enough money to pay for the fee!");
 		_;
 	}
-	function withdrawFunds() public onlyOwner{
+	function withdrawFunds() public view onlyOwner{
 		uint _amount = address(this).balance;
 		//sent balance to owner
 	}
@@ -66,19 +67,19 @@ contract Fallback {
 	We will allow users to send real ETH deposits to our smart contract by adding a payable function. 
 	Function deposit will be re-written to accept no arguments but receive real ETH deposits and still save 
 	and update user balance. deposit() accepts ETH through the payable modifier and updates user balance accordingly*/
-	address payable public owner;
+	
 
-	constructor(address _owner){
-		owner = payable(_owner);
+	constructor(){
+		owner = payable(msg.sender);
 	}
 
 	function deposit() public payable{ 
 		balances[msg.sender] = msg.value; 
-		emit FundsDeposited(msg.sender,_amount);
+		emit FundsDeposited(msg.sender,msg.value);
 	}
 	function addFund() public payable onlyUsers amountTooSmall(msg.value){
 		balances[msg.sender] += msg.value; 
-		emit FundsDeposited(msg.sender,_amount);
+		emit FundsDeposited(msg.sender,msg.value);
 	}
 
 	/*Fallback---------------------------------------------------------------------------------------------
