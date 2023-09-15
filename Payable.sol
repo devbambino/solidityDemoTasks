@@ -45,7 +45,7 @@ contract Payable {
 		require(_amount > fee,"Not enough money to pay for the fee!");
 		_;
 	}
-	function withdrawFunds() public onlyOwner{
+	function withdrawFunds() public view onlyOwner{
 		uint _amount = address(this).balance;
 		//sent balance to owner
 	}
@@ -69,16 +69,16 @@ contract Payable {
 	and update user balance. deposit() accepts ETH through the payable modifier and updates user balance accordingly*/
 	
 
-	constructor(address _owner){
-		owner = payable(_owner);
+	constructor(){
+		owner = payable(msg.sender);
 	}
 
 	function deposit() public payable{ 
 		balances[msg.sender] = msg.value; 
-		emit FundsDeposited(msg.sender,_amount);
+		emit FundsDeposited(msg.sender,msg.value);
 	}
 	function addFund() public payable onlyUsers amountTooSmall(msg.value){
 		balances[msg.sender] += msg.value; 
-		emit FundsDeposited(msg.sender,_amount);
+		emit FundsDeposited(msg.sender,msg.value);
 	}
 }
